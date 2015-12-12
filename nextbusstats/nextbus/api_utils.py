@@ -81,8 +81,8 @@ class NextBus():
         """Similar to get_predictions, but work in bulk. Limit: 150 stops per query"""
         root = self.__call_api('predictionsForMultiStops', {
             'a': agency_tag,
-            # Stop tags have to include the route_tag
-            # ex: ['512|12345',]
+            # Stop tags format 'route_tag|stop_tag'
+            # ex: ['512|14394',]
             'stops': stop_tags
         })
         predictions = []
