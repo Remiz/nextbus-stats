@@ -9,7 +9,12 @@ class NextBus():
     def __call_api(self, command, parameters={}):
         params_string = ''
         for param, value in parameters.iteritems():
-            params_string += '&%s=%s' % (param, value)
+            if isinstance(value, list):
+                for value_item in value:
+                    params_string += '&%s=%s' % (param, value_item)
+            else:
+                params_string += '&%s=%s' % (param, value)
+        print params_string
         response = requests.get(
             self.api_feed_url+'command='+command+params_string)
         if response.status_code == 200:
@@ -66,6 +71,19 @@ class NextBus():
             'a': agency_tag,
             'r': route_tag,
             's': stop_tag,
+        })
+        predictions = []
+        for prediction in root.findall('predictions/direction/prediction'):
+            predictions.append(prediction.attrib)
+        return predictions
+
+    def get_predictions_multi_stops(self, agency_tag, stop_tags):
+        """Similar to get_predictions, but work in bulk. Limit: 150 stops per query"""
+        root = self.__call_api('predictionsForMultiStops', {
+            'a': agency_tag,
+            # Stop tags have to include the route_tag
+            # ex: ['512|12345',]
+            'stops': stop_tags
         })
         predictions = []
         for prediction in root.findall('predictions/direction/prediction'):
