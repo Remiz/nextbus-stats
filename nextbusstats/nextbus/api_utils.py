@@ -14,7 +14,6 @@ class NextBus():
                     params_string += '&%s=%s' % (param, value_item)
             else:
                 params_string += '&%s=%s' % (param, value)
-        print params_string
         response = requests.get(
             self.api_feed_url+'command='+command+params_string)
         if response.status_code == 200:
