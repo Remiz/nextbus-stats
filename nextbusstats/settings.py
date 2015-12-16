@@ -123,16 +123,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Celery conf
-
-BROKER_URL = 'redis://localhost:6379/0'
-BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
-CELERY_SEND_TASK_ERROR_EMAILS = True
-# Auto-execute celery task instead of working async (dev only)
-#CELERY_ALWAYS_EAGER = True
-#CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+from celery_conf import *
 
 #######
 # App custom settings
