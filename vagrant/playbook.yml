@@ -41,6 +41,13 @@
   # Nextbus-stats specific
   ############################################
 
+  # Redis server
+  - name: Install redis server
+    apt: name=redis-server state=latest
+
+  - name: Start redis server
+    service: name=redis-server state=started enabled=true
+
   # Node.js 
   - name: Node.js/npm
     apt: name={{ item }} state=present
