@@ -1,0 +1,79 @@
+---
+- hosts: all
+
+  tasks:
+
+  ###########################################
+  # General
+  ###########################################
+  - name: Install usefull system tools
+    apt: name={{ item }} state=present update_cache=yes
+    with_items:
+      - vim
+      - curl
+      - htop
+      - git
+      - tig
+      - ncdu
+
+  ############################################
+  # Database software
+  ############################################
+
+  - name: Install Postgresql
+    apt: name={{item}}
+    with_items:
+      - postgresql
+      - libpq-dev
+      - python-psycopg2
+
+  - name: Create database
+    sudo: yes
+    sudo_user: postgres
+    postgresql_db: name=nextbus
+
+  - name: Create user
+    sudo: yes
+    sudo_user: postgres
+    postgresql_user: db=nextbus name=nextbus password=changeme priv=ALL
+
+  ############################################
+  # Nextbus-stats specific
+  ############################################
+
+  # Node.js 
+  - name: Node.js/npm
+    apt: name={{ item }} state=present
+    with_items:
+      - nodejs-legacy
+      - npm
+
+  - name: nodemon (via npm)
+    npm: name={{ item }} global=yes
+    with_items:
+      - bower
+      # We need JS/CSS compressors globally so they can be executed without virtualenv
+      - uglifyjs
+      - cssmin
+
+
+  # Python / Virtualenv
+  - name: Install pip
+    apt: name=python-pip state=latest
+
+  - name: Install python dev
+    apt: name=python-dev state=latest
+
+  - name: Install virtualenv/wrapper and certifi (for urllib3 warning)
+    pip: name={{ item }}
+    with_items:
+      - virtualenv
+      - virtualenvwrapper
+      - certifi
+
+  - name: Insert virtualenvwrapper script into bashrc
+    lineinfile:
+      dest=/home/vagrant/.bashrc
+      line="source /usr/local/bin/virtualenvwrapper.sh"
+      state=present
+      insertafter=EOF

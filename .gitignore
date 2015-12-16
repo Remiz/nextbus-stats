@@ -59,3 +59,6 @@ target/
 
 # Secret settings
 nextbusstats/settings_secret.py
+
+# Local vagrant content
+vagrant/.vagrant/
