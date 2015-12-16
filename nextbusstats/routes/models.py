@@ -12,6 +12,7 @@ class Route(models.Model):
     lat_max = models.FloatField()
     lon_min = models.FloatField()
     lon_max = models.FloatField()
+    monitored = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['tag']

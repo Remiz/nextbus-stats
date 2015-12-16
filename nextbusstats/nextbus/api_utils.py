@@ -76,8 +76,8 @@ class NextBus():
             predictions.append(prediction.attrib)
         return predictions
 
-    def get_predictions_multi_stops(self, agency_tag, stop_tags):
-        """Similar to get_predictions, but work in bulk. Limit: 150 stops per query"""
+    def get_first_prediction_multi_stops(self, agency_tag, stop_tags):
+        """Get the first prediction for each stop in the stop_tags list"""
         root = self.__call_api('predictionsForMultiStops', {
             'a': agency_tag,
             # Stop tags format 'route_tag|stop_tag'
@@ -85,6 +85,8 @@ class NextBus():
             'stops': stop_tags
         })
         predictions = []
-        for prediction in root.findall('predictions/direction/prediction'):
-            predictions.append(prediction.attrib)
+        for prediction in root.findall('predictions'):
+            stop_tag = prediction.attrib['stopTag']
+            prediction = prediction.findall('direction/prediction')[0].attrib['seconds']
+            predictions.append((stop_tag, prediction))
         return predictions
