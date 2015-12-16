@@ -13,6 +13,12 @@ class Route(models.Model):
     lon_min = models.FloatField()
     lon_max = models.FloatField()
 
+    class Meta:
+        ordering = ['tag']
+
+    def __str__(self):
+        return self.title
+
 
 class Stop(models.Model):
     tag = models.CharField(max_length=10)
@@ -21,3 +27,9 @@ class Stop(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='stops')
+
+    class Meta:
+        ordering = ['tag']
+
+    def __str__(self):
+        return self.title
