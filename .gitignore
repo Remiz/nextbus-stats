@@ -44,6 +44,10 @@ nosetests.xml
 coverage.xml
 *,cover
 
+# Editor
+*.sublime-project
+*.sublime-workspace
+
 # Translations
 *.mo
 *.pot
