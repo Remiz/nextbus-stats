@@ -1,0 +1,6 @@
+
+<ul>
+{% for route in routes %}
+    <li><a href="{% url 'route' route.id %}">{{route}}</a></li>
+{% endfor %}
+</ul>

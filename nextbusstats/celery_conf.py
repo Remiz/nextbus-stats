@@ -15,7 +15,7 @@ CELERYBEAT_SCHEDULE = {
     # Collect stop predictions
     'collect-prediction': {
         'task': 'nextbusstats.routes.tasks.collect_predictions',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/5'),
         'args': ()
     }
 }
