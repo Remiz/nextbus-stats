@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Route, Stop
+from .models import Route, Stop, Prediction
 
 
 @admin.register(Route)
@@ -12,3 +12,8 @@ class StopAdmin(admin.ModelAdmin):
     list_display = ('title', 'route')
     list_filter = ('route',)
     search_fields = ['title']
+
+
+@admin.register(Prediction)
+class PredictionAdmin(admin.ModelAdmin):
+    pass
