@@ -15,6 +15,7 @@ def collect_predictions():
     nb = NextBus()
     monitored_routes = Route.objects.filter(monitored=True)
     for route in monitored_routes:
+        #print 'Collecting predictions for route %s' % route.title
         all_stops = route.stops.all()
         p = Paginator(all_stops, 150)  # Paginate routes with more than 150 stops
         for page_number in p.page_range:
