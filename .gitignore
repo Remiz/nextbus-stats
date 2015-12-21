@@ -66,3 +66,6 @@ nextbusstats/settings_secret.py
 
 # Local vagrant content
 vagrant/.vagrant/
+
+# Celery beat schedule
+celerybeat-schedule

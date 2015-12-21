@@ -13,9 +13,9 @@ CELERY_SEND_TASK_ERROR_EMAILS = True
 
 CELERYBEAT_SCHEDULE = {
     # Collect stop predictions
-    'kiosk-alert': {
+    'collect-prediction': {
         'task': 'nextbusstats.routes.tasks.collect_predictions',
-        'schedule': crontab(minute='*/1'),
+        'schedule': crontab(minute='*/5'),
         'args': ()
     }
 }

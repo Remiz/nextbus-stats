@@ -34,3 +34,9 @@ class Stop(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Prediction(models.Model):
+    posted_at = models.DateTimeField(auto_now_add=True)
+    seconds = models.IntegerField()
+    stop = models.ForeignKey('Stop', on_delete=models.CASCADE, related_name='predictions')
