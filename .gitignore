@@ -69,3 +69,7 @@ vagrant/.vagrant/
 
 # Celery beat schedule
 celerybeat-schedule
+
+# Static files processed
+static/
+node_modules/
