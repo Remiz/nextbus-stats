@@ -131,4 +131,7 @@ from celery_conf import *
 
 AGENCY_TAG = 'ttc'
 
-from settings_secret import *
+try:
+    from settings_secret import *
+except ImportError:
+    raise Exception('Secret settings missing: create a file settings_secret.py')
