@@ -73,3 +73,4 @@ celerybeat-schedule
 # Static files processed
 static/
 node_modules/
+bower_components/
