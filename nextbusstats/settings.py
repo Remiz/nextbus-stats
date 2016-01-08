@@ -134,6 +134,7 @@ STATICFILES_FINDERS = (
 )
 
 from celery_conf import *
+from pipeline_conf import *
 
 #######
 # App custom settings
