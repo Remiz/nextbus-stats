@@ -3,7 +3,7 @@ PIPELINE = {
     'STYLESHEETS': {
         'global': {
             'source_filenames': (
-              'css/core.css',
+                'foundation-sites/dist/foundation.min.css',
             ),
             'output_filename': 'css/global.css',
             'extra_context': {
@@ -14,7 +14,8 @@ PIPELINE = {
     'JAVASCRIPT': {
         'global': {
             'source_filenames': (
-              'js/jquery.js',
+                'jquery/dist/jquery.min.js',
+                'foundation-sites/dist/foundation.min.js',
             ),
             'output_filename': 'js/global.js',
         }

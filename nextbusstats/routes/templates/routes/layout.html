@@ -1,0 +1,30 @@
+{% load pipeline %}
+
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Nextbus Stats - {% block 'title' %}Tracking vehicles reliability{% endblock %}</title>
+    {% stylesheet 'global' %}
+</head>
+<body>
+     
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <ul class="menu">
+                <li><a href="{% url 'routes_list' %}">Routes list</a></li>
+            </ul>
+        </div>
+    </div>
+     
+    <div class="row medium-8 large-7 columns">
+        {% block 'content' %}Replace block "content"{% endblock %}
+    </div>
+
+    {% javascript 'global' %}
+    <script>
+        $(document).foundation();
+    </script>
+</body>
+</html>

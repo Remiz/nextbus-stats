@@ -1,6 +1,10 @@
+{% extends "routes/layout.html" %}
 
-<ul>
-{% for route in routes %}
-    <li><a href="{% url 'route' route.id %}">{{route}}</a></li>
-{% endfor %}
-</ul>
+{% block 'content' %}
+    <h2>List of routes currently monitored</h2>
+    <ul>
+    {% for route in routes %}
+        <li><a href="{% url 'route' route.id %}">{{route}}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
