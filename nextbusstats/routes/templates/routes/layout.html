@@ -9,7 +9,7 @@
     {% stylesheet 'global' %}
 </head>
 <body>
-     
+
     <div class="top-bar">
         <div class="top-bar-left">
             <ul class="menu">
@@ -17,7 +17,7 @@
             </ul>
         </div>
     </div>
-     
+
     <div class="row medium-8 large-7 columns">
         {% block 'content' %}Replace block "content"{% endblock %}
     </div>
@@ -26,5 +26,6 @@
     <script>
         $(document).foundation();
     </script>
+    {% block 'additional_js' %}{% endblock %}
 </body>
 </html>

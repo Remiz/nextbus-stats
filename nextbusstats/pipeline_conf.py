@@ -16,6 +16,7 @@ PIPELINE = {
             'source_filenames': (
                 'jquery/dist/jquery.min.js',
                 'foundation-sites/dist/foundation.min.js',
+                'moment/min/moment.min.js',
                 'Chart.js/Chart.min.js',
             ),
             'output_filename': 'js/global.js',

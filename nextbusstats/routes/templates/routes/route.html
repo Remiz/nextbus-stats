@@ -3,5 +3,30 @@
 {% block 'content' %}
     <h2>Route {{route.title}}</h2>
 
+    <canvas id="routeChart" width="850" height="350"></canvas>
 {% endblock %}
 
+{% block 'additional_js' %}
+    <script type="text/javascript">
+        var chartCanvas = $('#routeChart');
+        var routeChart = new Chart(chartCanvas, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3]
+                }]
+            },
+            options:{
+                scales:{
+                    yAxes:[{
+                            ticks:{
+                                beginAtZero:true
+                            }
+                        }]
+                }
+            }
+        });
+    </script>
+{% endblock %}
