@@ -127,6 +127,9 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "../static/")
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), '..', 'bower_components'),
+)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
