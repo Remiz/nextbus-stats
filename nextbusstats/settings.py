@@ -131,7 +131,7 @@ STATICFILES_DIRS = (
     os.path.join(os.path.dirname(__file__), '..', 'bower_components'),
 )
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'pipeline.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
