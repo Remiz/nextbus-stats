@@ -47,6 +47,7 @@ coverage.xml
 # Editor
 *.sublime-project
 *.sublime-workspace
+.DS_Store
 
 # Translations
 *.mo
