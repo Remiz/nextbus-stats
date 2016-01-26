@@ -18,7 +18,10 @@
   ],
   "dependencies": {
     "Chart.js": "~2.0.0-beta2",
+    "foundation-datepicker": "~1.5.0",
+    "foundation-icon-fonts": "latest",
     "foundation-sites": "~6.1.1",
-    "moment": "~2.11.1"
+    "moment": "~2.11.1",
+    "vue": "~1.0.15"
   }
 }

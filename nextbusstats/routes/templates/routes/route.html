@@ -2,31 +2,36 @@
 
 {% block 'content' %}
     <h2>Route {{route.title}}</h2>
+    <div id="routeApp">
+        <form class="dateSelector">
+            <div class="row">
+                <div class="medium-5 columns">
+                    <label>
+                        Date from:
+                        <input type="text" id="datetime-from" v-datepicker="dateTimeFrom" />
+                    </label>
+                </div>
+                <div class="medium-5 columns">
+                    <label>
+                        Date to:
+                        <input type="text" id="datetime-to" v-datepicker="dateTimeTo" />
+                    </label>
+                </div>
+                <div class="medium-2 columns">
+                    <button type="button" class="button" v-on:click="ChangeDateRange">Update</button>
+                </div>
+            </div>
+        </form>
 
-    <canvas id="routeChart" width="850" height="350"></canvas>
+        {% verbatim %}
+            <pre>{{ $data | json }}</pre>
+        {% endverbatim %}
+
+         <canvas id="routeChart" width="850" height="350"></canvas>
+    </div>
 {% endblock %}
 
 {% block 'additional_js' %}
     <script type="text/javascript">
-        var chartCanvas = $('#routeChart');
-        var routeChart = new Chart(chartCanvas, {
-            type: 'bar',
-            data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3]
-                }]
-            },
-            options:{
-                scales:{
-                    yAxes:[{
-                            ticks:{
-                                beginAtZero:true
-                            }
-                        }]
-                }
-            }
-        });
     </script>
 {% endblock %}

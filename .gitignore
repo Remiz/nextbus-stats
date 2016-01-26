@@ -71,6 +71,6 @@ vagrant/.vagrant/
 celerybeat-schedule
 
 # Static files processed
-static/
+/static/*
 node_modules/
 bower_components/
