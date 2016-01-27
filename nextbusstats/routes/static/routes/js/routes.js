@@ -10,7 +10,7 @@ Vue.directive('datepicker', {
                 if (key == 'dateTimeFrom') {
                     return date.valueOf() > moment().valueOf() ? 'disabled'  : '';
                 } else {
-                    if (date.valueOf() <= vm.$get('dateTimeFrom') ||
+                    if (date < vm.$get('dateTimeFrom') ||
                         date.valueOf() > moment().valueOf()) {
                         return 'disabled';
                     } else {
