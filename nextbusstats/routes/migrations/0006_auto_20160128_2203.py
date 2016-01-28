@@ -56,9 +56,7 @@ def collect_routes_and_stops(apps, schema_editor):
                 direction_id=direction_stops[stop_info['tag']],
             )
             stop.save()
-        # Wait 2 seconds before querying next route
         print "Loading route: %s" % route.title
-        #time.sleep(2)
 
 
 class Migration(migrations.Migration):

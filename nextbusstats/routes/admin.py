@@ -5,6 +5,7 @@ from .models import Route, Stop, Prediction
 @admin.register(Route)
 class RouteAdmin(admin.ModelAdmin):
     list_display = ('tag', 'title')
+    search_fields = ['title']
 
 
 @admin.register(Stop)

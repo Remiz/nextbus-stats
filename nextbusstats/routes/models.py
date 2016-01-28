@@ -27,6 +27,9 @@ class Direction(models.Model):
     name = models.CharField(max_length=100)
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='directions')
 
+    def __str__(self):
+        return self.title
+
 
 class Stop(models.Model):
     tag = models.CharField(max_length=10)
