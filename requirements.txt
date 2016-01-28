@@ -1,5 +1,6 @@
 celery==3.1.20
 Django==1.9.1
+djangoajax==2.3.3
 django-pipeline==1.6.4
 ipdb==0.8.1
 psycopg2==2.6.1

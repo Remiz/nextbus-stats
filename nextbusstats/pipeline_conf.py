@@ -23,6 +23,7 @@ PIPELINE = {
                 'moment/min/moment.min.js',
                 'Chart.js/Chart.min.js',
                 'vue/dist/vue.min.js',
+                'common/js/csrf.js',
                 'routes/js/routes.js',
             ),
             'output_filename': 'js/global.js',

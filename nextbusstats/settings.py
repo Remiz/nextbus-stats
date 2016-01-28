@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party apps
     'pipeline',
+    'django_ajax',
     # custom apps
+    'nextbusstats.common',
     'nextbusstats.nextbus',
     'nextbusstats.routes',
 ]
