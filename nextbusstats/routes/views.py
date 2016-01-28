@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django_ajax.decorators import ajax
 from .models import Route
 
 
@@ -13,3 +14,13 @@ def route(request, route_id):
     return render(request, 'routes/route.html', {
         'route': route,
     })
+
+
+@ajax
+def get_chart(request):
+    return {'test': 'test'}
+
+
+@ajax
+def get_stops_from_direction(request):
+    return {'test': 'test'}

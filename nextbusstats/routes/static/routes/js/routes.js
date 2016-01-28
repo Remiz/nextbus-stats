@@ -31,8 +31,13 @@ new Vue({
         dateTimeTo: null,
     },
     methods: {
-        ChangeDateRange: function() {
-            console.log('changing');
+        UpdateChart: function() {
+            $.ajax({
+                method: 'POST',
+                url: url_get_chart,
+            }).done(function(response) {
+                console.log(response);
+            });
         }
     },
 
