@@ -21,6 +21,13 @@ class Route(models.Model):
         return self.title
 
 
+class Direction(models.Model):
+    tag = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=100)
+    route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='directions')
+
+
 class Stop(models.Model):
     tag = models.CharField(max_length=10)
     stop_id = models.CharField(max_length=10, null=True)
@@ -28,6 +35,13 @@ class Stop(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='stops')
+    direction = models.ForeignKey(
+        'Direction',
+        on_delete=models.CASCADE,
+        related_name='stops',
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         ordering = ['tag']

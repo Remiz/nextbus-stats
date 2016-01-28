@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('routes', '0002_auto_20151215_load_routes_and_stops'),
+        ('routes', '0001_initial'),
     ]
 
     operations = [
