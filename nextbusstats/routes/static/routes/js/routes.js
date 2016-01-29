@@ -39,12 +39,43 @@ new Vue({
                 method: 'POST',
                 url: url_get_chart,
                 data: {
-                    datetime_from: this.dateTimeFrom,
-                    datetime_to: this.dateTimeTo,
+                    datetime_from: this.dateTimeFrom.toISOString(),
+                    datetime_to: this.dateTimeTo.toISOString(),
                     stop_selected: this.stopSelected,
                 }
             }).done(function(response) {
-                console.log(response);
+                if (window.myChart){
+                    window.myChart.destroy();
+                }
+                predictions = response.content.predictions;
+                labels = [];
+                data = [];
+                for (var i =0; i < predictions.length; i++){
+                    labels.push(predictions[i].posted_at);
+                    data.push(predictions[i].prediction);
+                }
+                window.myChart = new Chart($(routeChart), {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'seconds',
+                            data: data
+                        }]
+                    },
+                    options:{
+                        scales:{
+                            yAxes:[{
+                                ticks:{
+                                    beginAtZero:true
+                                }
+                            }],
+                            xAxes: [{
+                                type: 'time',
+                            }]
+                        }
+                    }
+                });
             });
         },
         updateStops: function() {

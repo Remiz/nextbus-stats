@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django_ajax.decorators import ajax
 from django.http import Http404
-from .models import Route, Direction
+from .models import Route, Direction, Stop, Prediction
 
 
 def routes_list(request):
@@ -19,7 +19,24 @@ def route(request, route_id):
 
 @ajax
 def get_chart(request):
-    return {'test': 'test'}
+    if request.method != 'POST':
+        raise Http404
+    stop = get_object_or_404(Stop, pk=request.POST.get('stop_selected', None))
+    datetime_from = request.POST.get('datetime_from')
+    print datetime_from
+    datetime_to = request.POST.get('datetime_to')
+    predictions = Prediction.objects.filter(
+        stop=stop,
+        posted_at__gt=datetime_from,
+        posted_at__lte=datetime_to,
+    )
+    formated_predictions = []
+    for prediction in predictions:
+        formated_predictions.append({
+            'posted_at': prediction.posted_at.isoformat(),
+            'prediction': prediction.seconds,
+        })
+    return {'predictions': formated_predictions}
 
 
 @ajax
