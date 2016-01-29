@@ -87,6 +87,7 @@ class NextBus():
         predictions = []
         for prediction in root.findall('predictions'):
             stop_tag = prediction.attrib['stopTag']
-            prediction = prediction.findall('direction/prediction')[0].attrib['seconds']
-            predictions.append((stop_tag, prediction))
+            if len(prediction.findall('direction/prediction')) > 0:
+                prediction = prediction.findall('direction/prediction')[0].attrib['seconds']
+                predictions.append((stop_tag, prediction))
         return predictions
