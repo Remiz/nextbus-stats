@@ -9,7 +9,7 @@
                     <label>
                         Direction
                         <select v-model="direction" v-on:change="updateStops">
-                            <option selected="selected">-- Select a direction --</option>
+                            <option value="" selected="selected">-- Select a direction --</option>
                             {% for direction in route.directions.all %}
                                 <option value="{{direction.id}}">{{direction.name}}</option>
                             {% endfor %}
@@ -20,11 +20,14 @@
                     <label>
                         Stop
                         {% verbatim %}
-                        <select>
-                            <option>-- Select a stop --</option>
+                        <select v-model="stopSelected" v-if="direction != ''">
+                            <option selected="selected" value="">-- Select a stop --</option>
                             <option v-for="stop in stops" v-bind:value="stop.id">
                                 {{ stop.title }}
                             </option>
+                        </select>
+                        <select v-else disabled="disabled">
+                            <option>-- Select a direction first --</option>
                         </select>
                         {% endverbatim %}
                     </label>
@@ -36,13 +39,19 @@
                 <div class="medium-5 columns">
                     <label>
                         Date from:
-                        <input type="text" id="datetime-from" v-datepicker="dateTimeFrom" />
+                        <input type="text"
+                               id="datetime-from"
+                               v-datepicker="dateTimeFrom"
+                        />
                     </label>
                 </div>
                 <div class="medium-5 columns">
                     <label>
                         Date to:
-                        <input type="text" id="datetime-to" v-datepicker="dateTimeTo" />
+                        <input type="text"
+                               id="datetime-to"
+                               v-datepicker="dateTimeTo"
+                        />
                     </label>
                 </div>
                 <div class="medium-2 columns">
