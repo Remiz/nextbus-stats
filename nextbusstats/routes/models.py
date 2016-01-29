@@ -38,19 +38,19 @@ class Stop(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='stops')
-    direction = models.ForeignKey(
-        'Direction',
-        on_delete=models.CASCADE,
-        related_name='stops',
-        null=True,
-        blank=True,
-    )
+    directions = models.ManyToManyField('Direction', through='DirectionStop')
 
     class Meta:
         ordering = ['tag']
 
     def __str__(self):
         return self.title
+
+
+class DirectionStop(models.Model):
+    direction = models.ForeignKey(Direction, on_delete=models.CASCADE)
+    stop = models.ForeignKey(Stop, on_delete=models.CASCADE)
+    position = models.IntegerField()
 
 
 class Prediction(models.Model):

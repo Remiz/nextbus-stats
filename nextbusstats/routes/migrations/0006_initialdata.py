@@ -14,6 +14,7 @@ def collect_routes_and_stops(apps, schema_editor):
     Route = apps.get_model('routes', 'Route')
     Direction = apps.get_model('routes', 'Direction')
     Stop = apps.get_model('routes', 'Stop')
+    DirectionStop = apps.get_model('routes', 'DirectionStop')
 
     nb = NextBus()
     for route_info in nb.get_route_list(settings.AGENCY_TAG):
@@ -30,17 +31,7 @@ def collect_routes_and_stops(apps, schema_editor):
             lon_max=route_attributes['lonMax'],
         )
         route.save()
-        direction_stops = defaultdict(lambda: None)
-        for direction_info in route_config['directions']:
-            direction = Direction(
-                name=direction_info['name'],
-                title=direction_info['title'],
-                tag=direction_info['tag'],
-                route=route,
-            )
-            direction.save()
-            for stop in direction_info['stops']:
-                direction_stops[stop] = direction.id
+
         for stop_info in route_config['stops']:
             if 'stopId' in stop_info:  # stopId can be absent from stop
                 stop_id = stop_info['stopId']
@@ -53,16 +44,36 @@ def collect_routes_and_stops(apps, schema_editor):
                 lat=stop_info['lat'],
                 lon=stop_info['lon'],
                 route=route,
-                direction_id=direction_stops[stop_info['tag']],
             )
             stop.save()
-        print "Loading route: %s" % route.title
+
+        for direction_info in route_config['directions']:
+            direction = Direction(
+                name=direction_info['name'],
+                title=direction_info['title'],
+                tag=direction_info['tag'],
+                route=route,
+            )
+            direction.save()
+
+            # Saving stops order
+            position = 0
+            for stop_tag in direction_info['stops']:
+                direction_stop = DirectionStop(
+                    direction=direction,
+                    stop=Stop.objects.filter(tag=stop_tag).first(),
+                    position=position
+                )
+                direction_stop.save()
+                position += 1
+
+        print("Loading route: %s" % route.title)
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('routes', '0005_stop_direction'),
+        ('routes', '0005_stopdirection'),
     ]
 
     operations = [
