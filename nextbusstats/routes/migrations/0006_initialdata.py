@@ -71,7 +71,7 @@ def collect_routes_and_stops(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('routes', '0005_stopdirection'),
+        ('routes', '0005_directions_stops'),
     ]
 
     operations = [

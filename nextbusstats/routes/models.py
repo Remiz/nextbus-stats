@@ -25,6 +25,7 @@ class Direction(models.Model):
     tag = models.CharField(max_length=100)
     title = models.CharField(max_length=255)
     name = models.CharField(max_length=100)
+    stops = models.ManyToManyField('Stop', through='DirectionStop')
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='directions')
 
     def __str__(self):
@@ -38,7 +39,6 @@ class Stop(models.Model):
     lat = models.FloatField()
     lon = models.FloatField()
     route = models.ForeignKey('Route', on_delete=models.CASCADE, related_name='stops')
-    directions = models.ManyToManyField('Direction', through='DirectionStop')
 
     class Meta:
         ordering = ['tag']
