@@ -8,10 +8,10 @@
                 <div class="medium-5 columns">
                     <label>
                         Direction
-                        <select>
-                            <option>-- Select a direction --</option>
+                        <select v-model="direction" v-on:change="updateStops">
+                            <option selected="selected">-- Select a direction --</option>
                             {% for direction in route.directions.all %}
-                                <option>{{direction.name}}</option>
+                                <option value="{{direction.id}}">{{direction.name}}</option>
                             {% endfor %}
                         </select>
                     </label>
@@ -19,9 +19,14 @@
                 <div class="medium-5 columns">
                     <label>
                         Stop
+                        {% verbatim %}
                         <select>
                             <option>-- Select a stop --</option>
+                            <option v-for="stop in stops" v-bind:value="stop.id">
+                                {{ stop.title }}
+                            </option>
                         </select>
+                        {% endverbatim %}
                     </label>
                 </div>
                 <div class="medium-2 columns">
@@ -41,7 +46,7 @@
                     </label>
                 </div>
                 <div class="medium-2 columns">
-                    <button type="button" class="button" v-on:click="UpdateChart">Update</button>
+                    <button type="button" class="button" v-on:click="updateChart">Update</button>
                 </div>
             </div>
         </form>

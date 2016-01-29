@@ -27,16 +27,28 @@ Vue.directive('datepicker', {
 new Vue({
     el: '#routeApp',
     data: {
+        direction: null,
+        stops: [],
         dateTimeFrom: null,
         dateTimeTo: null,
     },
     methods: {
-        UpdateChart: function() {
+        updateChart: function() {
             $.ajax({
                 method: 'POST',
                 url: url_get_chart,
             }).done(function(response) {
                 console.log(response);
+            });
+        },
+        updateStops: function() {
+            var vm = this;
+            $.ajax({
+                method: 'POST',
+                url: url_get_stops_from_direction,
+                data: { direction: this.direction },
+            }).done(function(response) {
+                vm.stops = response.content.stops;
             });
         }
     },
