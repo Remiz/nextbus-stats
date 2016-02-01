@@ -1,25 +1,22 @@
+var datePickers = {};
 
 Vue.directive('datepicker', {
     bind: function(param) {
         var vm = this.vm;
         var key = this.expression;
-        $(this.el).fdatepicker({
-            pickTime: true,
-            format: 'mm/dd/yyyy hh:ii',
-            onRender: function(date) {
+
+        datePickers[key] = new Pikaday({
+            field: $(this.el)[0],
+            position: 'bottom',
+            showTime: false,
+            use24hour: true,
+            maxDate: moment().toDate(),
+            onSelect: function(date) {
+                vm.$set(key, date);
                 if (key == 'dateTimeFrom') {
-                    return date.valueOf() > moment().valueOf() ? 'disabled'  : '';
-                } else {
-                    if (date < vm.$get('dateTimeFrom') ||
-                        date.valueOf() > moment().valueOf()) {
-                        return 'disabled';
-                    } else {
-                        return '';
-                    }
+                    datePickers['dateTimeTo'].setMinDate(date);
                 }
             }
-        }).on('changeDate', function(ev) {
-            vm.$set(key, ev.date);
         });
     },
 });
