@@ -21,9 +21,11 @@ def route(request, route_id):
 def get_chart(request):
     if request.method != 'POST':
         raise Http404
-    stop = get_object_or_404(Stop, pk=request.POST.get('stop_selected', None))
+    stop_id = request.POST.get('stop_selected', None)
+    if stop_id in [None, '']:
+        raise ValueError("stop_id can't be None or empty")
+    stop = get_object_or_404(Stop, pk=stop_id)
     datetime_from = request.POST.get('datetime_from')
-    print datetime_from
     datetime_to = request.POST.get('datetime_to')
     predictions = Prediction.objects.filter(
         stop=stop,
@@ -43,7 +45,10 @@ def get_chart(request):
 def get_stops_from_direction(request):
     if request.method != 'POST':
         raise Http404
-    direction = get_object_or_404(Direction, pk=request.POST.get('direction', None))
+    direction_id = request.POST.get('direction', None)
+    if direction_id in [None, '']:
+        raise ValueError("direction_id can't be None or empty")
+    direction = get_object_or_404(Direction, pk=direction_id)
     stops = []
     for stop in direction.stops.all().order_by('directionstop__position'):
         stops.append({
