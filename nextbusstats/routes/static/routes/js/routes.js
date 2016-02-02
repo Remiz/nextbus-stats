@@ -15,6 +15,8 @@ Vue.directive('datepicker', {
                 vm.$set(key, date);
                 if (key == 'dateTimeFrom') {
                     datePickers['dateTimeTo'].setMinDate(date);
+                    datePickers['dateTimeTo'].gotoDate(date);
+                    datePickers['dateTimeTo'].show();
                 }
             }
         });
