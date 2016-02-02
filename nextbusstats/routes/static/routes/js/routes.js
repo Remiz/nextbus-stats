@@ -34,15 +34,21 @@ new Vue({
     },
     methods: {
         updateChart: function() {
+            // make the dateTimeTo include (add 23 hours 59 minutes and 59 seconds)
+            dateTimeTo = moment(this.dateTimeTo).add(86400-1, 's');
             $.ajax({
                 method: 'POST',
                 url: url_get_chart,
                 data: {
                     datetime_from: this.dateTimeFrom.toISOString(),
-                    datetime_to: this.dateTimeTo.toISOString(),
+                    datetime_to: dateTimeTo.toISOString(),
                     stop_selected: this.stopSelected,
                 }
             }).done(function(response) {
+                if (response.status != 200) {
+                    console.log(response);
+                    return false;
+                }
                 if (window.myChart){
                     window.myChart.destroy();
                 }
