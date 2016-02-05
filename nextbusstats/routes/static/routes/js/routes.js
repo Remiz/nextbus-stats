@@ -30,12 +30,29 @@ new Vue({
         dateTimeFrom: null,
         dateTimeTo: null,
         direction: null,
+        hideCharts: true,
+        showWarning: false,
         stops: [],
+    },
+    computed: {
+
     },
     methods: {
         updateCharts: function() {
-            this.updateTimePlotChart();
-            this.updateDailyAverageChart();
+            // Check that all required parameters are selected
+            if ( moment(this.dateTimeFrom).isValid() &&
+                 moment(this.dateTimeTo).isValid() &&
+                 $.isNumeric(this.stopSelected))
+            {
+                this.updateTimePlotChart();
+                this.updateDailyAverageChart();
+                this.updateHourlyAverageChart();
+                this.hideCharts = false;
+                this.showWarning = false;
+            } else {
+                this.hideCharts = true;
+                this.showWarning = true;
+            }
         },
         updateStops: function() {
             var vm = this;
@@ -80,6 +97,9 @@ new Vue({
                         labels: labels,
                         datasets: [{
                             label: 'seconds',
+                            fill: true,
+                            backgroundColor: "rgba(116,169,207,0.2)",
+                            borderColor: "rgba(5,112,176,1)",
                             data: data
                         }]
                     },
@@ -136,6 +156,8 @@ new Vue({
                         labels: labels,
                         datasets: [{
                             label: 'seconds',
+                            backgroundColor: "rgba(5,112,176,1)",
+                            //borderColor: "rgba(5,112,176,1)",
                             data: data
                         }]
                     },
@@ -152,6 +174,52 @@ new Vue({
                 });
             });
         },
+        updateHourlyAverageChart: function() {
+            $.ajax({
+                method: 'POST',
+                url: url_get_hourly_average_chart,
+                data: {
+                    stop_selected: this.stopSelected,
+                }
+            }).done(function(response) {
+                if (response.status != 200) {
+                    console.log(response);
+                    return false;
+                }
+                if (window.hourly_average_chart){
+                    window.hourly_average_chart.destroy();
+                }
+                avg_hourly = response.content.avg_hourly;
+                labels = [];
+                data = [];
+                for (var key in avg_hourly){
+                    labels.push(key);
+                    data.push(Math.round(avg_hourly[key]));
+                }
+                window.hourly_average_chart = new Chart($("#hourlyAverageChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'seconds',
+                            backgroundColor: "rgba(5,112,176,1)",
+                            //borderColor: "rgba(5,112,176,1)",
+                            data: data
+                        }]
+                    },
+                    options:{
+                        scales:{
+                            yAxes:[{
+
+                            }],
+                            xAxes: [{
+
+                            }]
+                        }
+                    }
+                });
+            });
+        }
     },
 
 });

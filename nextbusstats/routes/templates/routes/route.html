@@ -4,78 +4,86 @@
     <h2>Route {{route.title}}</h2>
     <div id="routeApp">
         <form class="selectors">
-            <validator name="validator1">
-                <div class="row">
-                    <div class="medium-5 columns">
-                        <label>
-                            Direction
-                            <select v-model="direction" v-on:change="updateStops">
-                                <option value="" selected="selected">-- Select a direction --</option>
-                                {% for direction in route.directions.all %}
-                                    <option value="{{direction.id}}">{{direction.title}}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </div>
-                    <div class="medium-5 columns">
-                        <label>
-                            Stop
-                            {% verbatim %}
-                            <select v-model="stopSelected"
-                                    v-if="direction != ''">
-                                <option selected="selected" value="">-- Select a stop --</option>
-                                <option v-for="stop in stops" v-bind:value="stop.id">
-                                    {{ stop.title }}
-                                </option>
-                            </select>
-                            <select v-else disabled="disabled">
-                                <option>-- Select a direction first --</option>
-                            </select>
-                            {% endverbatim %}
-                        </label>
-                    </div>
-                    <div class="medium-2 columns">
-                    </div>
+            <div class="row">
+                <div class="medium-5 columns">
+                    <label>
+                        Direction
+                        <select v-model="direction" v-on:change="updateStops">
+                            <option value="" selected="selected">-- Select a direction --</option>
+                            {% for direction in route.directions.all %}
+                                <option value="{{direction.id}}">{{direction.title}}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
                 </div>
-                <div class="row">
-                    <div class="medium-5 columns">
-                        <label>
-                            Date from:
-                            <input type="text"
-                                   id="datetime-from"
-                                   v-datepicker="dateTimeFrom"
-                            />
-                        </label>
-                    </div>
-                    <div class="medium-5 columns">
-                        <label>
-                            Date to:
-                            <input type="text"
-                                   id="datetime-to"
-                                   v-datepicker="dateTimeTo"
-                            />
-                        </label>
-                    </div>
-                    <div class="medium-2 columns">
-                        <button type="button"
-                                class="button"
+                <div class="medium-5 columns">
+                    <label>
+                        Stop
+                        {% verbatim %}
+                        <select v-model="stopSelected"
+                                v-if="direction != ''">
+                            <option selected="selected" value="">-- Select a stop --</option>
+                            <option v-for="stop in stops" v-bind:value="stop.id">
+                                {{ stop.title }}
+                            </option>
+                        </select>
+                        <select v-else disabled="disabled">
+                            <option>-- Select a direction first --</option>
+                        </select>
+                        {% endverbatim %}
+                    </label>
+                </div>
+                <div class="medium-2 columns">
+                </div>
+            </div>
+            <div class="row">
+                <div class="medium-5 columns">
+                    <label>
+                        Date from:
+                        <input type="text"
+                               id="datetime-from"
+                               v-datepicker="dateTimeFrom"
+                        />
+                    </label>
+                </div>
+                <div class="medium-5 columns">
+                    <label>
+                        Date to:
+                        <input type="text"
+                               id="datetime-to"
+                               v-datepicker="dateTimeTo"
+                        />
+                    </label>
+                </div>
+                <div class="medium-2 columns">
+                    <button type="button"
+                            class="button"
 
-                                v-on:click="updateCharts"
-                        >Update</button>
-                    </div>
+                            v-on:click="updateCharts"
+                    >Update</button>
                 </div>
-            </validator>
+            </div>
         </form>
+        <div v-if="showWarning" class="callout alert">
+            <p>Please select a <strong>stop</strong>, a <strong>start date</strong> and an <strong>end date</strong>.</p>
+        </div>
         <hr />
-        <h3>Waiting time</h3>
-        <canvas id="timePlotChart" width="855" height="370"></canvas>
-        <hr />
-        <h3>Daily average</h3>
-        <canvas id="dailyAverageChart" width="855" height="300"></canvas>
-        <hr />
+        <div v-if="!hideCharts">
+            <h3>Waiting time</h3>
+            <canvas id="timePlotChart" width="855" height="370"></canvas>
+            <hr />
+            <h3>Daily average</h3>
+            <canvas id="dailyAverageChart" width="855" height="300"></canvas>
+            <hr />
+            <h3>Hourly average</h3>
+            <canvas id="hourlyAverageChart" width="855" height="300"></canvas>
+            <hr />
+        </div>
+        {% comment %}
         {% verbatim %}
             <pre>{{ $data | json }}</pre>
         {% endverbatim %}
+        {% endcomment %}
     </div>
 {% endblock %}
 
@@ -84,5 +92,6 @@
         var url_get_stops_from_direction = '{% url 'get_stops_from_direction' %}';
         var url_get_chart = '{% url 'get_chart' %}';
         var url_get_daily_average_chart = '{% url 'get_daily_average_chart' %}';
+        var url_get_hourly_average_chart = '{% url 'get_hourly_average_chart' %}';
     </script>
 {% endblock %}

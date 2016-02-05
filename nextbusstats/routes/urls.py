@@ -16,4 +16,9 @@ urlpatterns = [
         views.get_daily_average_chart,
         name='get_daily_average_chart'
     ),
+    url(
+        r'^get-hourly-average-chart/$',
+        views.get_hourly_average_chart,
+        name='get_hourly_average_chart'
+    ),
 ]

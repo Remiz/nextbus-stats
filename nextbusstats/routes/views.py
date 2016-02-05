@@ -57,8 +57,26 @@ def get_daily_average_chart(request):
             posted_at__week_day=weekday
         ).aggregate(Avg('seconds'))
         avg_weekday[weekday] = prediction_avg['seconds__avg']
-    print avg_weekday
     return {'avg_weekday': avg_weekday}
+
+
+@ajax
+def get_hourly_average_chart(request):
+    if request.method != 'POST':
+        raise Http404
+    stop_id = request.POST.get('stop_selected', None)
+    if stop_id in [None, '']:
+        raise ValueError("stop_id can't be None or empty")
+    stop = get_object_or_404(Stop, pk=stop_id)
+    avg_hourly = {}
+    for hour in range(0, 24):
+        prediction_avg = Prediction.objects.filter(
+            stop=stop,
+            posted_at__hour=hour
+        ).aggregate(Avg('seconds'))
+        avg_hourly[hour] = prediction_avg['seconds__avg']
+    print avg_hourly
+    return {'avg_hourly': avg_hourly}
 
 
 @ajax
