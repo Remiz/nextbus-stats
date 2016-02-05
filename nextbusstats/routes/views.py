@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django_ajax.decorators import ajax
+from django.db.models import Avg
 from django.http import Http404
 from .models import Route, Direction, Stop, Prediction
 
@@ -39,6 +40,25 @@ def get_chart(request):
             'prediction': prediction.seconds,
         })
     return {'predictions': formated_predictions}
+
+
+@ajax
+def get_daily_average_chart(request):
+    if request.method != 'POST':
+        raise Http404
+    stop_id = request.POST.get('stop_selected', None)
+    if stop_id in [None, '']:
+        raise ValueError("stop_id can't be None or empty")
+    stop = get_object_or_404(Stop, pk=stop_id)
+    avg_weekday = {}
+    for weekday in range(1, 8):
+        prediction_avg = Prediction.objects.filter(
+            stop=stop,
+            posted_at__week_day=weekday
+        ).aggregate(Avg('seconds'))
+        avg_weekday[weekday] = prediction_avg['seconds__avg']
+    print avg_weekday
+    return {'avg_weekday': avg_weekday}
 
 
 @ajax

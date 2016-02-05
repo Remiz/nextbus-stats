@@ -60,15 +60,19 @@
                         <button type="button"
                                 class="button"
 
-                                v-on:click="updateChart"
+                                v-on:click="updateCharts"
                         >Update</button>
                     </div>
                 </div>
             </validator>
         </form>
-
-        <canvas id="routeChart" width="855" height="370"></canvas>
-
+        <hr />
+        <h3>Waiting time</h3>
+        <canvas id="timePlotChart" width="855" height="370"></canvas>
+        <hr />
+        <h3>Daily average</h3>
+        <canvas id="dailyAverageChart" width="855" height="300"></canvas>
+        <hr />
         {% verbatim %}
             <pre>{{ $data | json }}</pre>
         {% endverbatim %}
@@ -79,5 +83,6 @@
     <script type="text/javascript">
         var url_get_stops_from_direction = '{% url 'get_stops_from_direction' %}';
         var url_get_chart = '{% url 'get_chart' %}';
+        var url_get_daily_average_chart = '{% url 'get_daily_average_chart' %}';
     </script>
 {% endblock %}

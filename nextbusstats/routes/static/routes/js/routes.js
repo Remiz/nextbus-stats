@@ -33,8 +33,23 @@ new Vue({
         stops: [],
     },
     methods: {
-        updateChart: function() {
-            // make the dateTimeTo include (add 23 hours 59 minutes and 59 seconds)
+        updateCharts: function() {
+            this.updateTimePlotChart();
+            this.updateDailyAverageChart();
+        },
+        updateStops: function() {
+            var vm = this;
+            $.ajax({
+                method: 'POST',
+                url: url_get_stops_from_direction,
+                data: { direction: this.direction },
+            }).done(function(response) {
+                vm.stopSelected = "";
+                vm.stops = response.content.stops;
+            });
+        },
+        updateTimePlotChart: function() {
+            // make the dateTimeTo inclusive (add 23 hours 59 minutes and 59 seconds)
             dateTimeTo = moment(this.dateTimeTo).add(86400-1, 's');
             $.ajax({
                 method: 'POST',
@@ -49,8 +64,8 @@ new Vue({
                     console.log(response);
                     return false;
                 }
-                if (window.myChart){
-                    window.myChart.destroy();
+                if (window.time_plot_chart){
+                    window.time_plot_chart.destroy();
                 }
                 predictions = response.content.predictions;
                 labels = [];
@@ -59,7 +74,7 @@ new Vue({
                     labels.push(predictions[i].posted_at);
                     data.push(predictions[i].prediction);
                 }
-                window.myChart = new Chart($(routeChart), {
+                window.time_plot_chart = new Chart($("#timePlotChart"), {
                     type: 'line',
                     data: {
                         labels: labels,
@@ -83,17 +98,60 @@ new Vue({
                 });
             });
         },
-        updateStops: function() {
-            var vm = this;
+        updateDailyAverageChart: function() {
             $.ajax({
                 method: 'POST',
-                url: url_get_stops_from_direction,
-                data: { direction: this.direction },
+                url: url_get_daily_average_chart,
+                data: {
+                    stop_selected: this.stopSelected,
+                }
             }).done(function(response) {
-                vm.stopSelected = "";
-                vm.stops = response.content.stops;
+                if (response.status != 200) {
+                    console.log(response);
+                    return false;
+                }
+                if (window.daily_average_chart){
+                    window.daily_average_chart.destroy();
+                }
+                avg_weekday = response.content.avg_weekday;
+                labels = [];
+                data = [];
+                days_of_week = {  // Django starts weekday on Sunday
+                    1: 'Sunday',
+                    2: 'Monday',
+                    3: 'Tuesday',
+                    4: 'Wednesday',
+                    5: 'Thursday',
+                    6: 'Friday',
+                    7: 'Saturday',
+                };
+                for (var key in avg_weekday){
+                    weekday = days_of_week[key];
+                    labels.push(weekday);
+                    data.push(Math.round(avg_weekday[key]));
+                }
+                window.daily_average_chart = new Chart($("#dailyAverageChart"), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'seconds',
+                            data: data
+                        }]
+                    },
+                    options:{
+                        scales:{
+                            yAxes:[{
+
+                            }],
+                            xAxes: [{
+
+                            }]
+                        }
+                    }
+                });
             });
-        }
+        },
     },
 
 });
