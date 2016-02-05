@@ -22,6 +22,7 @@ PIPELINE = {
                 'pikaday-time/pikaday.js',
                 'pikaday-time/plugins/pikaday.jquery.js',
                 'moment/min/moment.min.js',
+                'moment-timezone/builds/moment-timezone-with-data.min.js',
                 'Chart.js/Chart.min.js',
                 'vue/dist/vue.min.js',
                 'common/js/csrf.js',

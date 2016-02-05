@@ -75,6 +75,7 @@ new Vue({
                     datetime_from: this.dateTimeFrom.toISOString(),
                     datetime_to: dateTimeTo.toISOString(),
                     stop_selected: this.stopSelected,
+                    timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
                 if (response.status != 200) {
@@ -124,6 +125,7 @@ new Vue({
                 url: url_get_daily_average_chart,
                 data: {
                     stop_selected: this.stopSelected,
+                    timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
                 if (response.status != 200) {
@@ -180,6 +182,7 @@ new Vue({
                 url: url_get_hourly_average_chart,
                 data: {
                     stop_selected: this.stopSelected,
+                    timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
                 if (response.status != 200) {
