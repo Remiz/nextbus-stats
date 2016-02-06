@@ -1,4 +1,6 @@
+import pytz
 from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 from django_ajax.decorators import ajax
 from django.db.models import Avg
 from django.http import Http404
@@ -50,6 +52,8 @@ def get_daily_average_chart(request):
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
+    tzname = request.POST.get('timezone', 'America/Toronto')
+    timezone.activate(pytz.timezone(tzname))
     avg_weekday = {}
     for weekday in range(1, 8):
         prediction_avg = Prediction.objects.filter(
@@ -68,6 +72,8 @@ def get_hourly_average_chart(request):
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
+    tzname = request.POST.get('timezone', 'America/Toronto')
+    timezone.activate(pytz.timezone(tzname))
     avg_hourly = {}
     for hour in range(0, 24):
         prediction_avg = Prediction.objects.filter(
@@ -75,7 +81,6 @@ def get_hourly_average_chart(request):
             posted_at__hour=hour
         ).aggregate(Avg('seconds'))
         avg_hourly[hour] = prediction_avg['seconds__avg']
-    print avg_hourly
     return {'avg_hourly': avg_hourly}
 
 
