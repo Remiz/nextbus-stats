@@ -27,15 +27,21 @@
       - libpq-dev
       - python-psycopg2
 
-  - name: Create database
+  - name: Create databases
     sudo: yes
     sudo_user: postgres
     postgresql_db: name=nextbus
 
-  - name: Create user
+  - name: Create database user
     sudo: yes
     sudo_user: postgres
-    postgresql_user: db=nextbus name=nextbus password=changeme priv=ALL
+    postgresql_user: name=nextbus password=changeme state=present role_attr_flags=NOSUPERUSER,CREATEDB
+
+  - name: Add permissions on nextbus
+    sudo: yes
+    sudo_user: postgres
+    postgresql_user: user=nextbus db=nextbus priv=ALL
+
 
   ############################################
   # Nextbus-stats specific
