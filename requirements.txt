@@ -1,7 +1,7 @@
 celery==3.1.20
 Django==1.9.2
 djangoajax==2.3.3
-django-pipeline==1.6.4
+django-pipeline==1.6.5
 factory_boy==2.6.1
 ipdb==0.8.1
 psycopg2==2.6.1
