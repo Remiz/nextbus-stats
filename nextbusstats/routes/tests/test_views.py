@@ -2,7 +2,8 @@ import json
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from nextbusstats.routes.factories import (
-    RouteFactory, DirectionFactory
+    RouteFactory, DirectionFactory, PredictionFactory,
+    StopFactory, DirectionStopFactory
 )
 
 
@@ -18,6 +19,18 @@ class RoutesViewsTest(TestCase):
             title='Direction 2',
             route=self.route_1
         )
+        self.stop = StopFactory(
+            route=self.route_1,
+        )
+        DirectionStopFactory(
+            direction=self.direction_1,
+            stop=self.stop,
+            position=0,
+        )
+        for i in range(0, 10):
+            prediction = PredictionFactory(
+                stop=self.stop
+            )
 
     def test_routes_list(self):
         response = self.client.get(
@@ -40,22 +53,18 @@ class RoutesViewsTest(TestCase):
         response = self.client.get(
             reverse('get_chart')
         )
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
         # non POST call
         response = self.client.get(
             reverse('get_chart'),
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
-        # response is always 200, JSON embed the status
-        json_response = json.loads(response.content)
-        self.assertEqual(json_response['status'], 404)
+        self.assertEqual(response.status_code, 403)
         # Invalid stop_id
-        response = self.client.post(
-            reverse('get_chart'),
-            {'stop_selected': ''},
-            HTTP_X_REQUESTED_WITH='XMLHttpRequest'
-        )
-        json_response = json.loads(response.content)
-        self.assertEqual(json_response['status'], 500)
-
-
+        with self.assertRaises(ValueError):
+            response = self.client.post(
+                reverse('get_chart'),
+                {'stop_selected': ''},
+                HTTP_X_REQUESTED_WITH='XMLHttpRequest'
+            )
+        # Get predictions

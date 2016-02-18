@@ -3,7 +3,7 @@ import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.db.models import Avg
-from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden
 from .models import Route, Direction, Stop, Prediction
 
 
