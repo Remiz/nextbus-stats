@@ -1,9 +1,9 @@
 import pytz
+import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django_ajax.decorators import ajax
 from django.db.models import Avg
-from django.http import Http404
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from .models import Route, Direction, Stop, Prediction
 
 
@@ -20,10 +20,9 @@ def route(request, route_id):
     })
 
 
-@ajax
 def get_chart(request):
-    if request.method != 'POST':
-        raise Http404
+    if request.method != 'POST' or not request.is_ajax():
+        return HttpResponseForbidden()
     stop_id = request.POST.get('stop_selected', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
@@ -41,13 +40,13 @@ def get_chart(request):
             'posted_at': prediction.posted_at.isoformat(),
             'prediction': prediction.seconds,
         })
-    return {'predictions': formated_predictions}
+    response = {'predictions': formated_predictions}
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-@ajax
 def get_daily_average_chart(request):
-    if request.method != 'POST':
-        raise Http404
+    if request.method != 'POST' or not request.is_ajax():
+        return HttpResponseForbidden()
     stop_id = request.POST.get('stop_selected', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
@@ -61,13 +60,13 @@ def get_daily_average_chart(request):
             posted_at__week_day=weekday
         ).aggregate(Avg('seconds'))
         avg_weekday[weekday] = prediction_avg['seconds__avg']
-    return {'avg_weekday': avg_weekday}
+    response = {'avg_weekday': avg_weekday}
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-@ajax
 def get_hourly_average_chart(request):
-    if request.method != 'POST':
-        raise Http404
+    if request.method != 'POST' or not request.is_ajax():
+        return HttpResponseForbidden()
     stop_id = request.POST.get('stop_selected', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
@@ -81,13 +80,13 @@ def get_hourly_average_chart(request):
             posted_at__hour=hour
         ).aggregate(Avg('seconds'))
         avg_hourly[hour] = prediction_avg['seconds__avg']
-    return {'avg_hourly': avg_hourly}
+    response = {'avg_hourly': avg_hourly}
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-@ajax
 def get_stops_from_direction(request):
-    if request.method != 'POST':
-        raise Http404
+    if request.method != 'POST' or not request.is_ajax():
+        return HttpResponseForbidden()
     direction_id = request.POST.get('direction', None)
     if direction_id in [None, '']:
         raise ValueError("direction_id can't be None or empty")
@@ -98,4 +97,5 @@ def get_stops_from_direction(request):
             'id': stop.id,
             'title': stop.title,
         })
-    return {'stops': stops}
+    response = {'stops': stops}
+    return HttpResponse(json.dumps(response), content_type='application/json')
