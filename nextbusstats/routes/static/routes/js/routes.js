@@ -62,7 +62,7 @@ new Vue({
                 data: { direction: this.direction },
             }).done(function(response) {
                 vm.stopSelected = "";
-                vm.stops = response.content.stops;
+                vm.stops = response.stops;
             });
         },
         updateTimePlotChart: function() {
@@ -78,14 +78,10 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (response.status != 200) {
-                    console.log(response);
-                    return false;
-                }
                 if (window.time_plot_chart){
                     window.time_plot_chart.destroy();
                 }
-                predictions = response.content.predictions;
+                predictions = response.predictions;
                 labels = [];
                 data = [];
                 for (var i =0; i < predictions.length; i++){
@@ -117,6 +113,10 @@ new Vue({
                         }
                     }
                 });
+            })
+            .fail(function(response) {
+                console.log(response);
+                return false;
             });
         },
         updateDailyAverageChart: function() {
@@ -128,14 +128,10 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (response.status != 200) {
-                    console.log(response);
-                    return false;
-                }
                 if (window.daily_average_chart){
                     window.daily_average_chart.destroy();
                 }
-                avg_weekday = response.content.avg_weekday;
+                avg_weekday = response.avg_weekday;
                 labels = [];
                 data = [];
                 days_of_week = {  // Django starts weekday on Sunday
@@ -174,6 +170,10 @@ new Vue({
                         }
                     }
                 });
+            })
+            .fail(function(response) {
+                console.log(response);
+                return false;
             });
         },
         updateHourlyAverageChart: function() {
@@ -185,14 +185,10 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (response.status != 200) {
-                    console.log(response);
-                    return false;
-                }
                 if (window.hourly_average_chart){
                     window.hourly_average_chart.destroy();
                 }
-                avg_hourly = response.content.avg_hourly;
+                avg_hourly = response.avg_hourly;
                 labels = [];
                 data = [];
                 for (var key in avg_hourly){
@@ -221,6 +217,10 @@ new Vue({
                         }
                     }
                 });
+            })
+            .fail(function(response) {
+                console.log(response);
+                return false;
             });
         }
     },

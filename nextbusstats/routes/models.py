@@ -57,3 +57,6 @@ class Prediction(models.Model):
     posted_at = models.DateTimeField(auto_now_add=True)
     seconds = models.IntegerField()
     stop = models.ForeignKey('Stop', on_delete=models.CASCADE, related_name='predictions')
+
+    def __str__(self):
+        return "%s - %s s - %s" % (self.stop, self.seconds, self.posted_at)
