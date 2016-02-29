@@ -20,6 +20,7 @@ class NextBus():
             response_xml = response.text
         else:
             response.raise_for_status()
+        #import ipdb; ipdb.set_trace()
         return ET.fromstring(response_xml)
 
     def get_agency_list(self):
