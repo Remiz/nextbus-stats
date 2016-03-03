@@ -70,18 +70,19 @@
 
 
   # Python / Virtualenv
-  - name: Install pip
-    apt: name=python-pip state=latest
+  - name: Install pip/python ffi/ssl libs (for urllib3 warning)
+    apt: name={{ item }} state=latest
+    with_items:
+      - python-pip
+      - python-dev
+      - libffi-dev
+      - libssl-dev
 
-  - name: Install python dev
-    apt: name=python-dev state=latest
-
-  - name: Install virtualenv/wrapper and certifi (for urllib3 warning)
+  - name: Install virtualenv/wrapper
     pip: name={{ item }}
     with_items:
       - virtualenv
       - virtualenvwrapper
-      - certifi
 
   - name: Insert virtualenvwrapper script into bashrc
     lineinfile:
