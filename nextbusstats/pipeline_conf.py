@@ -5,6 +5,7 @@ PIPELINE = {
             'source_filenames': (
                 'foundation-sites/dist/foundation.min.css',
                 'pikaday/css/pikaday.css',
+                'jt.timepicker/jquery.timepicker.css',
                 'foundation-icon-fonts/foundation-icons.css',
                 'routes/css/routes.css',
             ),
@@ -21,6 +22,7 @@ PIPELINE = {
                 'foundation-sites/dist/foundation.min.js',
                 'pikaday/pikaday.js',
                 'pikaday/plugins/pikaday.jquery.js',
+                'jt.timepicker/jquery.timepicker.min.js',
                 'moment/min/moment.min.js',
                 'moment-timezone/builds/moment-timezone-with-data.min.js',
                 'Chart.js/Chart.min.js',

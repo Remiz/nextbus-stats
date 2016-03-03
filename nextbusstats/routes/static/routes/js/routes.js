@@ -1,4 +1,5 @@
 var datePickers = {};
+var timePickers = {};
 
 Vue.directive('datepicker', {
     bind: function(param) {
@@ -13,7 +14,7 @@ Vue.directive('datepicker', {
             maxDate: moment().toDate(),
             onSelect: function(date) {
                 vm.$set(key, date);
-                if (key == 'dateTimeFrom') {
+                if (key == 'dateFrom') {
                     datePickers['dateTo'].setMinDate(date);
                     datePickers['dateTo'].gotoDate(date);
                     datePickers['dateTo'].show();
@@ -23,12 +24,36 @@ Vue.directive('datepicker', {
     },
 });
 
+Vue.directive('timepicker', {
+    bind: function(param) {
+        var vm = this.vm;
+        var key = this.expression;
+
+        timePickers[key] = $(this.el).timepicker({
+            step: 15,
+        });
+
+        $(this.el).on('changeTime', function(e) {
+            vm.$set(key, timePickers[key].val());
+            /*
+            if (key == 'timeStart') {
+                timePickers['timeEnd'].timepicker('option', 'minTime', timePickers['timeStart'].val());
+            } else {
+                timePickers['timeStart'].timepicker('option', 'maxTime', timePickers['timeEnd'].val());
+            }
+            */
+        });
+    }
+});
+
 new Vue({
     el: '#routeApp',
     data: {
         stopSelected: null,
         dateFrom: null,
         dateTo: null,
+        timeStart: null,
+        timeEnd: null,
         direction: null,
         hideCharts: true,
         showWarning: false,
@@ -66,6 +91,9 @@ new Vue({
             });
         },
         updateTimePlotChart: function() {
+            if (window.time_plot_chart){
+                window.time_plot_chart.destroy();
+            }
             // make the dateTo inclusive (add 23 hours 59 minutes and 59 seconds)
             dateTo = moment(this.dateTo).add(86400-1, 's');
             $.ajax({
@@ -78,9 +106,6 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (window.time_plot_chart){
-                    window.time_plot_chart.destroy();
-                }
                 predictions = response.predictions;
                 labels = [];
                 data = [];
@@ -125,6 +150,9 @@ new Vue({
             });
         },
         updateDailyAverageChart: function() {
+            if (window.daily_average_chart){
+                window.daily_average_chart.destroy();
+            }
             $.ajax({
                 method: 'POST',
                 url: url_get_daily_average_chart,
@@ -133,9 +161,6 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (window.daily_average_chart){
-                    window.daily_average_chart.destroy();
-                }
                 avg_weekday = response.avg_weekday;
                 labels = [];
                 data = [];
@@ -182,6 +207,9 @@ new Vue({
             });
         },
         updateHourlyAverageChart: function() {
+            if (window.hourly_average_chart){
+                window.hourly_average_chart.destroy();
+            }
             $.ajax({
                 method: 'POST',
                 url: url_get_hourly_average_chart,
@@ -190,9 +218,6 @@ new Vue({
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                if (window.hourly_average_chart){
-                    window.hourly_average_chart.destroy();
-                }
                 avg_hourly = response.avg_hourly;
                 labels = [];
                 data = [];

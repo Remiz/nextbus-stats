@@ -21,13 +21,17 @@
                         Stop
                         {% verbatim %}
                         <select v-model="stopSelected"
-                                v-if="direction != ''">
+                                v-if="direction != ''"
+                                id="stopSelected"
+                                >
                             <option selected="selected" value="">-- Select a stop --</option>
                             <option v-for="stop in stops" v-bind:value="stop.id">
                                 {{ stop.title }}
                             </option>
                         </select>
-                        <select v-else disabled="disabled">
+                        <select v-else disabled="disabled"
+                                id="stopSelected"
+                                >
                             <option>-- Select a direction first --</option>
                         </select>
                         {% endverbatim %}
@@ -51,6 +55,30 @@
                         <input type="text"
                                id="date-to"
                                v-datepicker="dateTo"
+                        />
+                    </label>
+                </div>
+                <div class="medium-2 columns"></div>
+            </div>
+            <div class="row">
+                <div class="medium-5 columns">
+                    <label>
+                        Start time (optional):
+                        <input type="text"
+                               id="time-start"
+                               v-timepicker="timeStart"
+                               placeholder="ex: 5:00am"
+                        />
+                    </label>
+                    <p class="help-text" id="timeStart">Certain routes do not operate 24/24h, you can precise times for the first and last vehicles here.</p>
+                </div>
+                <div class="medium-5 columns">
+                    <label>
+                        End time (optional):
+                        <input type="text"
+                               id="time-end"
+                               v-timepicker="timeEnd"
+                               placeholder="ex: 2:00am"
                         />
                     </label>
                 </div>
@@ -78,11 +106,11 @@
             <canvas id="hourlyAverageChart" width="855" height="300"></canvas>
             <hr />
         </div>
-        {% comment %}
+        {#% comment %#}
         {% verbatim %}
             <pre>{{ $data | json }}</pre>
         {% endverbatim %}
-        {% endcomment %}
+        {#% endcomment %#}
     </div>
 {% endblock %}
 
