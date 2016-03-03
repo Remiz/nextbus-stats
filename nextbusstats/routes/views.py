@@ -27,12 +27,12 @@ def get_chart(request):
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
-    datetime_from = request.POST.get('datetime_from')
-    datetime_to = request.POST.get('datetime_to')
+    date_from = request.POST.get('date_from')
+    date_to = request.POST.get('date_to')
     predictions = Prediction.objects.filter(
         stop=stop,
-        posted_at__gt=datetime_from,
-        posted_at__lte=datetime_to,
+        posted_at__gt=date_from,
+        posted_at__lte=date_to,
     )
     formated_predictions = []
     for prediction in predictions:

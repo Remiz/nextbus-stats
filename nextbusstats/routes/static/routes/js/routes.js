@@ -14,9 +14,9 @@ Vue.directive('datepicker', {
             onSelect: function(date) {
                 vm.$set(key, date);
                 if (key == 'dateTimeFrom') {
-                    datePickers['dateTimeTo'].setMinDate(date);
-                    datePickers['dateTimeTo'].gotoDate(date);
-                    datePickers['dateTimeTo'].show();
+                    datePickers['dateTo'].setMinDate(date);
+                    datePickers['dateTo'].gotoDate(date);
+                    datePickers['dateTo'].show();
                 }
             }
         });
@@ -27,8 +27,8 @@ new Vue({
     el: '#routeApp',
     data: {
         stopSelected: null,
-        dateTimeFrom: null,
-        dateTimeTo: null,
+        dateFrom: null,
+        dateTo: null,
         direction: null,
         hideCharts: true,
         showWarning: false,
@@ -40,8 +40,8 @@ new Vue({
     methods: {
         updateCharts: function() {
             // Check that all required parameters are selected
-            if ( moment(this.dateTimeFrom).isValid() &&
-                 moment(this.dateTimeTo).isValid() &&
+            if ( moment(this.dateFrom).isValid() &&
+                 moment(this.dateTo).isValid() &&
                  $.isNumeric(this.stopSelected))
             {
                 this.updateTimePlotChart();
@@ -66,14 +66,14 @@ new Vue({
             });
         },
         updateTimePlotChart: function() {
-            // make the dateTimeTo inclusive (add 23 hours 59 minutes and 59 seconds)
-            dateTimeTo = moment(this.dateTimeTo).add(86400-1, 's');
+            // make the dateTo inclusive (add 23 hours 59 minutes and 59 seconds)
+            dateTo = moment(this.dateTo).add(86400-1, 's');
             $.ajax({
                 method: 'POST',
                 url: url_get_chart,
                 data: {
-                    datetime_from: this.dateTimeFrom.toISOString(),
-                    datetime_to: dateTimeTo.toISOString(),
+                    date_from: this.dateFrom.toISOString(),
+                    date_to: dateTo.toISOString(),
                     stop_selected: this.stopSelected,
                     timezone: moment.tz.guess(),
                 }
