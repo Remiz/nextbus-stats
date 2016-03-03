@@ -88,6 +88,7 @@ new Vue({
                     labels.push(predictions[i].posted_at);
                     data.push(predictions[i].prediction);
                 }
+                var timeFormat = 'MM/DD/YYYY HH:mm';
                 window.time_plot_chart = new Chart($("#timePlotChart"), {
                     type: 'line',
                     data: {
@@ -109,6 +110,10 @@ new Vue({
                             }],
                             xAxes: [{
                                 type: 'time',
+                                time: {
+                                    //format: timeFormat,
+                                    tooltipFormat: 'll HH:mm'
+                                }
                             }]
                         }
                     }
