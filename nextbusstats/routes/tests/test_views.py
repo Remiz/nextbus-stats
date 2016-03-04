@@ -64,8 +64,8 @@ class RoutesViewsTest(TestCase):
             reverse('get_chart'),
             {
                 'stop_selected': self.stop.id,
-                'datetime_from': (timezone.now() - timedelta(hours=2)).isoformat(),
-                'datetime_to': timezone.now().isoformat(),
+                'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
+                'date_to': timezone.now().isoformat(),
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
@@ -85,8 +85,8 @@ class RoutesViewsTest(TestCase):
             reverse('get_daily_average_chart'),
             {
                 'stop_selected': self.stop.id,
-                'datetime_from': (timezone.now() - timedelta(hours=2)).isoformat(),
-                'datetime_to': timezone.now().isoformat(),
+                'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
+                'date_to': timezone.now().isoformat(),
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
@@ -106,8 +106,8 @@ class RoutesViewsTest(TestCase):
             reverse('get_hourly_average_chart'),
             {
                 'stop_selected': self.stop.id,
-                'datetime_from': (timezone.now() - timedelta(hours=2)).isoformat(),
-                'datetime_to': timezone.now().isoformat(),
+                'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
+                'date_to': timezone.now().isoformat(),
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
