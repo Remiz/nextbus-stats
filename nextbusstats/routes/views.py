@@ -109,5 +109,3 @@ def get_stops_from_direction(request):
         })
     response = {'stops': stops}
     return HttpResponse(json.dumps(response), content_type='application/json')
-
-
