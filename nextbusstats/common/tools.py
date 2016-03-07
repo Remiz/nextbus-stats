@@ -6,5 +6,5 @@ def is_valid_time_format(time_str):
     try:
         time.strptime(time_str, '%I:%M%p')
         return True
-    except ValueError:
+    except:
         return False

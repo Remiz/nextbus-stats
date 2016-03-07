@@ -63,7 +63,7 @@ class RoutesViewsTest(TestCase):
         response = self.client.post(
             reverse('get_chart'),
             {
-                'stop_selected': self.stop.id,
+                'stop_id': self.stop.id,
                 'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
                 'date_to': timezone.now().isoformat(),
             },
@@ -77,14 +77,14 @@ class RoutesViewsTest(TestCase):
         with self.assertRaises(ValueError):
             response = self.client.post(
                 reverse('get_daily_average_chart'),
-                {'stop_selected': ''},
+                {'stop_id': ''},
                 HTTP_X_REQUESTED_WITH='XMLHttpRequest'
             )
         # Get daily average
         response = self.client.post(
             reverse('get_daily_average_chart'),
             {
-                'stop_selected': self.stop.id,
+                'stop_id': self.stop.id,
                 'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
                 'date_to': timezone.now().isoformat(),
             },
@@ -98,14 +98,14 @@ class RoutesViewsTest(TestCase):
         with self.assertRaises(ValueError):
             response = self.client.post(
                 reverse('get_hourly_average_chart'),
-                {'stop_selected': ''},
+                {'stop_id': ''},
                 HTTP_X_REQUESTED_WITH='XMLHttpRequest'
             )
         # Get daily average
         response = self.client.post(
             reverse('get_hourly_average_chart'),
             {
-                'stop_selected': self.stop.id,
+                'stop_id': self.stop.id,
                 'date_from': (timezone.now() - timedelta(hours=2)).isoformat(),
                 'date_to': timezone.now().isoformat(),
             },
