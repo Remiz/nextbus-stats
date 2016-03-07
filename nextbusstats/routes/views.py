@@ -1,9 +1,11 @@
 import pytz
 import json
+import time
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.db.models import Avg
 from django.http import HttpResponse, HttpResponseForbidden
+from nextbusstats.common.tools import is_valid_time_format
 from .models import Route, Direction, Stop, Prediction
 
 
@@ -23,17 +25,25 @@ def route(request, route_id):
 def get_chart(request):
     if request.method != 'POST' or not request.is_ajax():
         return HttpResponseForbidden()
-    stop_id = request.POST.get('stop_selected', None)
+    stop_id = request.POST.get('stop_id', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
     date_from = request.POST.get('date_from')
     date_to = request.POST.get('date_to')
+    time_start = request.POST.get('time_start')
+    time_end = request.POST.get('time_end')
+    tzname = request.POST.get('timezone', 'America/Toronto')
     predictions = Prediction.objects.filter(
         stop=stop,
         posted_at__gt=date_from,
         posted_at__lte=date_to,
     )
+    if is_valid_time_format(time_start) and is_valid_time_format(time_end):
+        time_start = time.strptime(time_start, '%I:%M%p')
+        time_end = time.strptime(time_end, '%I:%M%p')
+        predictions = predictions.exclude(posted_at__hour__range=(time_end.tm_hour, time_start.tm_hour))
+        #import ipdb; ipdb.set_trace()
     formated_predictions = []
     for prediction in predictions:
         formated_predictions.append({
@@ -47,7 +57,7 @@ def get_chart(request):
 def get_daily_average_chart(request):
     if request.method != 'POST' or not request.is_ajax():
         return HttpResponseForbidden()
-    stop_id = request.POST.get('stop_selected', None)
+    stop_id = request.POST.get('stop_id', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
@@ -67,7 +77,7 @@ def get_daily_average_chart(request):
 def get_hourly_average_chart(request):
     if request.method != 'POST' or not request.is_ajax():
         return HttpResponseForbidden()
-    stop_id = request.POST.get('stop_selected', None)
+    stop_id = request.POST.get('stop_id', None)
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
@@ -99,3 +109,5 @@ def get_stops_from_direction(request):
         })
     response = {'stops': stops}
     return HttpResponse(json.dumps(response), content_type='application/json')
+
+
