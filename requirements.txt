@@ -1,6 +1,6 @@
-celery==3.1.21
+celery==3.1.23
 Django==1.9.4
-django-pipeline==1.6.6
+django-pipeline==1.6.7
 factory_boy==2.6.1
 httmock==1.2.5
 ipdb==0.9.0
