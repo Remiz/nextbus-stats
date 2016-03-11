@@ -2,10 +2,14 @@ import pytz
 import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django.db.models import Avg, Func, F
+from django.db.models import Avg
+from django.db import models
 from django.http import HttpResponse, HttpResponseForbidden
-from nextbusstats.common.tools import is_valid_time_format, timestr_to_utc
+from nextbusstats.common.tools import is_valid_time_format, DateTimeTimeTransform
 from .models import Route, Direction, Stop, Prediction
+
+# allows filtering by __time
+models.DateTimeField.register_lookup(DateTimeTimeTransform)
 
 
 def routes_list(request):
@@ -33,15 +37,14 @@ def get_chart(request):
     time_start = request.POST.get('time_start')
     time_end = request.POST.get('time_end')
     tzname = request.POST.get('timezone', 'America/Toronto')
+    timezone.activate(pytz.timezone(tzname))
     predictions = Prediction.objects.filter(
         stop=stop,
         posted_at__gt=date_from,
         posted_at__lte=date_to,
     )
     if is_valid_time_format(time_start) and is_valid_time_format(time_end):
-        time_start = timestr_to_utc(time_start, tzname)
-        time_end = timestr_to_utc(time_end, tzname)
-        #import ipdb; ipdb.set_trace()
+        predictions = predictions.exclude(posted_at__time__range=(time_end, time_start))
     formated_predictions = []
     for prediction in predictions:
         formated_predictions.append({

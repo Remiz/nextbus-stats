@@ -1,6 +1,8 @@
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
+from django.utils.functional import cached_property
 import time
-import pytz
-from datetime import datetime
 
 
 def is_valid_time_format(time_str):
@@ -12,10 +14,29 @@ def is_valid_time_format(time_str):
         return False
 
 
-def timestr_to_utc(time_str, timezone):
-    ''' Convert a time, ex: 4:00am to a UTC datetime object '''
-    datetime_obj = datetime.strptime(time_str, '%H:%M')
-    #tz = pytz.timezone(timezone)
-    #datetime_obj = tz.localize(datetime_obj)
-    #datetime_obj = datetime_obj.astimezone(pytz.UTC)
-    return datetime_obj
+class DateTimeTimeTransform(models.Transform):
+    ''' Filter by time, thanks to charettes:
+    https://www.reddit.com/r/django/comments/49p8dg/excluding_hours_range_ex_from_215am_to_5am_from_a/d0ubvls '''
+    lookup_name = 'time'
+
+    @cached_property
+    def output_field(self):
+        return models.TimeField()
+
+    def as_mysql(self, compiler, connection):
+        lhs, lhs_params = compiler.compile(self.lhs)
+        if settings.USE_TZ:
+            tzname = timezone.get_current_timezone_name()
+            lhs, tz_params = connection.ops._convert_field_to_tz(lhs, tzname)
+            lhs_params.extend(tz_params)
+        sql = "TIME(%s)" % lhs
+        return sql, lhs_params
+
+    def as_postgresql(self, compiler, connection):
+        lhs, lhs_params = compiler.compile(self.lhs)
+        if settings.USE_TZ:
+            tzname = timezone.get_current_timezone_name()
+            lhs, tz_params = connection.ops._convert_field_to_tz(lhs, tzname)
+            lhs_params.extend(tz_params)
+        sql = "(%s)::time" % lhs
+        return sql, lhs_params
