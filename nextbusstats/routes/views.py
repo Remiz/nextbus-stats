@@ -2,7 +2,7 @@ import pytz
 import json
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from django.db.models import Avg
+from django.db.models import Avg, Func, F
 from django.http import HttpResponse, HttpResponseForbidden
 from nextbusstats.common.tools import is_valid_time_format, timestr_to_utc
 from .models import Route, Direction, Stop, Prediction
@@ -41,7 +41,6 @@ def get_chart(request):
     if is_valid_time_format(time_start) and is_valid_time_format(time_end):
         time_start = timestr_to_utc(time_start, tzname)
         time_end = timestr_to_utc(time_end, tzname)
-        predictions = predictions.exclude(posted_at__hour__range=(time_end.hour, time_start.hour))
         #import ipdb; ipdb.set_trace()
     formated_predictions = []
     for prediction in predictions:

@@ -31,6 +31,7 @@ Vue.directive('timepicker', {
 
         timePickers[key] = $(this.el).timepicker({
             step: 15,
+            timeFormat: 'H:i',
         });
 
         $(this.el).on('changeTime', function(e) {
