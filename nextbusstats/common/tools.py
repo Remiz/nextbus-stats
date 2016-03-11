@@ -26,17 +26,17 @@ class DateTimeTimeTransform(models.Transform):
     def as_mysql(self, compiler, connection):
         lhs, lhs_params = compiler.compile(self.lhs)
         if settings.USE_TZ:
+            lhs = "CONVERT_TZ(%s, 'UTC', %%s)" % lhs
             tzname = timezone.get_current_timezone_name()
-            lhs, tz_params = connection.ops._convert_field_to_tz(lhs, tzname)
-            lhs_params.extend(tz_params)
+            lhs_params.append(tzname)
         sql = "TIME(%s)" % lhs
         return sql, lhs_params
 
     def as_postgresql(self, compiler, connection):
         lhs, lhs_params = compiler.compile(self.lhs)
         if settings.USE_TZ:
+            lhs = "%s AT TIME ZONE %%s" % lhs
             tzname = timezone.get_current_timezone_name()
-            lhs, tz_params = connection.ops._convert_field_to_tz(lhs, tzname)
-            lhs_params.extend(tz_params)
+            lhs_params.append(tzname)
         sql = "(%s)::time" % lhs
         return sql, lhs_params
