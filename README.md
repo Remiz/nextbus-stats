@@ -36,3 +36,4 @@ celery -A nextbusstats -B  # Celery worker (predictions collection)
 
 - The default transit agency is set to Toronto Transit Commission (TTC), if you want to change it, edit the settings.py file and change the AGENCY_TAG.
 - Access the admin at http://127.0.0.1:8000/admin and manage the Routes. Pick the ones you want to monitor, **do not monitor too many routes at the same time or you'll trigger the rate limit of Nextbus API**.
+- Access the frontend http://127.0.0.1:8000/ to visualize the routes performances once you collected enough data to see something interesting.
