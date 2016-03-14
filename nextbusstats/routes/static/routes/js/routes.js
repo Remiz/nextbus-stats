@@ -36,13 +36,11 @@ Vue.directive('timepicker', {
 
         $(this.el).on('changeTime', function(e) {
             vm.$set(key, timePickers[key].val());
-            /*
             if (key == 'timeStart') {
-                timePickers['timeEnd'].timepicker('option', 'minTime', timePickers['timeStart'].val());
+                timePickers['timeEnd'].timepicker('option', 'maxTime', timePickers['timeStart'].val());
             } else {
-                timePickers['timeStart'].timepicker('option', 'maxTime', timePickers['timeEnd'].val());
+                timePickers['timeStart'].timepicker('option', 'minTime', timePickers['timeEnd'].val());
             }
-            */
         });
     }
 });
