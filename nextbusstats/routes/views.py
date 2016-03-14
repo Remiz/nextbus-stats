@@ -62,6 +62,8 @@ def get_daily_average_chart(request):
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
+    time_start = request.POST.get('time_start')
+    time_end = request.POST.get('time_end')
     tzname = request.POST.get('timezone', 'America/Toronto')
     timezone.activate(pytz.timezone(tzname))
     avg_weekday = {}
@@ -70,6 +72,8 @@ def get_daily_average_chart(request):
             stop=stop,
             posted_at__week_day=weekday
         ).aggregate(Avg('seconds'))
+        if is_valid_time_format(time_start) and is_valid_time_format(time_end):
+            prediction_avg = prediction_avg.exclude(posted_at__time__range=(time_end, time_start))
         avg_weekday[weekday] = prediction_avg['seconds__avg']
     response = {'avg_weekday': avg_weekday}
     return HttpResponse(json.dumps(response), content_type='application/json')
@@ -82,6 +86,8 @@ def get_hourly_average_chart(request):
     if stop_id in [None, '']:
         raise ValueError("stop_id can't be None or empty")
     stop = get_object_or_404(Stop, pk=stop_id)
+    time_start = request.POST.get('time_start')
+    time_end = request.POST.get('time_end')
     tzname = request.POST.get('timezone', 'America/Toronto')
     timezone.activate(pytz.timezone(tzname))
     avg_hourly = {}
@@ -90,6 +96,8 @@ def get_hourly_average_chart(request):
             stop=stop,
             posted_at__hour=hour
         ).aggregate(Avg('seconds'))
+        if is_valid_time_format(time_start) and is_valid_time_format(time_end):
+            prediction_avg = prediction_avg.exclude(posted_at__time__range=(time_end, time_start))
         avg_hourly[hour] = prediction_avg['seconds__avg']
     response = {'avg_hourly': avg_hourly}
     return HttpResponse(json.dumps(response), content_type='application/json')
