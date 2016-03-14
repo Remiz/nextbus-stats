@@ -137,7 +137,6 @@ new Vue({
                             xAxes: [{
                                 type: 'time',
                                 time: {
-                                    //format: timeFormat,
                                     tooltipFormat: 'll HH:mm'
                                 }
                             }]
@@ -186,7 +185,6 @@ new Vue({
                         datasets: [{
                             label: 'seconds',
                             backgroundColor: "rgba(5,112,176,1)",
-                            //borderColor: "rgba(5,112,176,1)",
                             data: data
                         }]
                     },
@@ -233,7 +231,6 @@ new Vue({
                         datasets: [{
                             label: 'seconds',
                             backgroundColor: "rgba(5,112,176,1)",
-                            //borderColor: "rgba(5,112,176,1)",
                             data: data
                         }]
                     },
