@@ -138,8 +138,8 @@ STATICFILES_FINDERS = (
     'pipeline.finders.PipelineFinder',
 )
 
-from celery_conf import *
-from pipeline_conf import *
+from .celery_conf import *
+from .pipeline_conf import *
 
 #######
 # App custom settings
@@ -148,6 +148,6 @@ from pipeline_conf import *
 AGENCY_TAG = 'ttc'
 
 try:
-    from settings_secret import *
+    from .settings_secret import *
 except ImportError:
     raise Exception('Secret settings missing: create a file settings_secret.py')

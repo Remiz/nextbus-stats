@@ -8,7 +8,7 @@ class NextBus():
 
     def __call_api(self, command, parameters={}):
         params_string = ''
-        for param, value in parameters.iteritems():
+        for param, value in parameters.items():
             if isinstance(value, list):
                 for value_item in value:
                     params_string += '&%s=%s' % (param, value_item)
