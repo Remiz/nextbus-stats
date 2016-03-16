@@ -71,9 +71,10 @@ def get_daily_average_chart(request):
         prediction_avg = Prediction.objects.filter(
             stop=stop,
             posted_at__week_day=weekday
-        ).aggregate(Avg('seconds'))
+        )
         if is_valid_time_format(time_start) and is_valid_time_format(time_end):
             prediction_avg = prediction_avg.exclude(posted_at__time__range=(time_end, time_start))
+        prediction_avg = prediction_avg.aggregate(Avg('seconds'))
         avg_weekday[weekday] = prediction_avg['seconds__avg']
     response = {'avg_weekday': avg_weekday}
     return HttpResponse(json.dumps(response), content_type='application/json')
@@ -95,9 +96,10 @@ def get_hourly_average_chart(request):
         prediction_avg = Prediction.objects.filter(
             stop=stop,
             posted_at__hour=hour
-        ).aggregate(Avg('seconds'))
+        )
         if is_valid_time_format(time_start) and is_valid_time_format(time_end):
             prediction_avg = prediction_avg.exclude(posted_at__time__range=(time_end, time_start))
+        prediction_avg = prediction_avg.aggregate(Avg('seconds'))
         avg_hourly[hour] = prediction_avg['seconds__avg']
     response = {'avg_hourly': avg_hourly}
     return HttpResponse(json.dumps(response), content_type='application/json')

@@ -124,6 +124,14 @@ new Vue({
                             fill: true,
                             backgroundColor: "rgba(116,169,207,0.2)",
                             borderColor: "rgba(5,112,176,1)",
+                            borderWidth: 2,
+                            pointBorderColor: "rgba(255,255,255,0)",
+                            pointBackgroundColor: "rgba(255,255,255,0)",
+                            //pointRadius: 0,
+                            pointBorderRadius: 0,
+                            //pointHoverRadius: 0,
+                            pointHoverBackgroundColor: "rgba(5,112,176,1)",
+                            tension: 0.1,
                             data: data
                         }]
                     },
@@ -140,8 +148,9 @@ new Vue({
                                     tooltipFormat: 'll HH:mm'
                                 }
                             }]
-                        }
+                        },
                     }
+
                 });
             })
             .fail(function(response) {
@@ -158,6 +167,8 @@ new Vue({
                 url: url_get_daily_average_chart,
                 data: {
                     stop_id: this.stopSelected,
+                    time_start: this.timeStart,
+                    time_end: this.timeEnd,
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
@@ -214,6 +225,8 @@ new Vue({
                 url: url_get_hourly_average_chart,
                 data: {
                     stop_id: this.stopSelected,
+                    time_start: this.timeStart,
+                    time_end: this.timeEnd,
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
