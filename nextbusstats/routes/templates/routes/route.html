@@ -97,11 +97,11 @@
         <div v-if="!hideCharts">
             <h3>Waiting time</h3>
             <div class="tiny button-group">
-              <a class="button">1 min</a>
-              <a class="button">5 min</a>
-              <a class="button">15 min</a>
-              <a class="button">30 min</a>
-              <a class="button">1 hour</a>
+              <a class="button" v-on:click="updateFrequency('1t')">1 min</a>
+              <a class="button" v-on:click="updateFrequency('5t')">5 min</a>
+              <a class="button" v-on:click="updateFrequency('15t')">15 min</a>
+              <a class="button" v-on:click="updateFrequency('30t')">30 min</a>
+              <a class="button" v-on:click="updateFrequency('H')">1 hour</a>
             </div>
             <canvas id="timePlotChart" width="855" height="370"></canvas>
             <hr />
@@ -112,11 +112,11 @@
             <canvas id="hourlyAverageChart" width="855" height="300"></canvas>
             <hr />
         </div>
-        {% comment %}
+        {#% comment %#}
         {% verbatim %}
             <pre>{{ $data | json }}</pre>
         {% endverbatim %}
-        {% endcomment %}
+        {#% endcomment %#}
     </div>
 {% endblock %}
 

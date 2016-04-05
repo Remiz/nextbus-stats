@@ -1,5 +1,6 @@
 import pytz
 import json
+import math
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.db.models import Avg
@@ -34,6 +35,7 @@ def get_chart(request):
     stop = get_object_or_404(Stop, pk=stop_id)
     date_from = request.POST.get('date_from')
     date_to = request.POST.get('date_to')
+    frequency = request.POST.get('frequency', '1t')
     time_start = request.POST.get('time_start')
     time_end = request.POST.get('time_end')
     tzname = request.POST.get('timezone', 'America/Toronto')
@@ -45,14 +47,15 @@ def get_chart(request):
     )
     if is_valid_time_format(time_start) and is_valid_time_format(time_end):
         predictions = predictions.exclude(posted_at__time__range=(time_end, time_start))
-    formated_predictions = []
-    for prediction in predictions:
-        formated_predictions.append({
-            'posted_at': prediction.posted_at.isoformat(),
-            'prediction': prediction.seconds,
-        })
-    response = {'predictions': formated_predictions}
-    return HttpResponse(json.dumps(response), content_type='application/json')
+    # Converting predictions to Pandas timeseries and resample by frequency
+    dataframe = predictions.to_timeseries(
+        fieldnames=['posted_at', 'seconds'],
+        index='posted_at',
+        values='seconds',
+        freq=frequency,
+    ).dropna(how='any')  # Drop nan
+    predictions_json = dataframe.to_json(date_format='iso', orient='index')
+    return HttpResponse(predictions_json, content_type='application/json')
 
 
 def get_daily_average_chart(request):

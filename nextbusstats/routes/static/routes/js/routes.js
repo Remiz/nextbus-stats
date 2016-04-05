@@ -51,6 +51,7 @@ new Vue({
         stopSelected: null,
         dateFrom: null,
         dateTo: null,
+        frequency: '1t',
         timeStart: null,
         timeEnd: null,
         direction: null,
@@ -78,6 +79,10 @@ new Vue({
                 this.showWarning = true;
             }
         },
+        updateFrequency: function(frequency) {
+            this.frequency = frequency;
+            this.updateTimePlotChart();
+        },
         updateStops: function() {
             var vm = this;
             $.ajax({
@@ -101,18 +106,19 @@ new Vue({
                 data: {
                     date_from: this.dateFrom.toISOString(),
                     date_to: dateTo.toISOString(),
+                    frequency: this.frequency,
                     time_start: this.timeStart,
                     time_end: this.timeEnd,
                     stop_id: this.stopSelected,
                     timezone: moment.tz.guess(),
                 }
             }).done(function(response) {
-                predictions = response.predictions;
+                predictions = response;
                 labels = [];
                 data = [];
-                for (var i =0; i < predictions.length; i++){
-                    labels.push(predictions[i].posted_at);
-                    data.push(predictions[i].prediction);
+                for (var posted_at in predictions) {
+                    labels.push(posted_at);
+                    data.push(predictions[posted_at].seconds);
                 }
                 var timeFormat = 'MM/DD/YYYY HH:mm';
                 window.time_plot_chart = new Chart($("#timePlotChart"), {
