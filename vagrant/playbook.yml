@@ -91,3 +91,9 @@
       line="source /usr/local/bin/virtualenvwrapper.sh"
       state=present
       insertafter=EOF
+
+  - name: Create virtualenv and install requirements
+    pip:
+      requirements: /vagrant/requirements.txt
+      virtualenv: /home/vagrant/.virtualenvs/nextbus
+      virtualenv_python: python3.4
