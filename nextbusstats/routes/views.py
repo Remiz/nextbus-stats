@@ -51,7 +51,7 @@ def get_chart(request):
         fieldnames=['posted_at', 'seconds'],
         index='posted_at',
         values='seconds',
-        freq=frequency,
+        freq=frequency,  # resampling triggers deprecation warning to use .mean()
     ).dropna(how='any')  # Drop nan
     predictions_json = dataframe.to_json(date_format='iso', orient='index')
     return HttpResponse(predictions_json, content_type='application/json')
@@ -121,4 +121,4 @@ def get_stops_from_direction(request):
             'title': stop.title,
         })
     response = {'stops': stops}
-    return HttpResponse(json.dumps(response), content_type='application/json')
+    return HttpResponse(json.dumps(response), content_t
