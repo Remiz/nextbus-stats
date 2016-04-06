@@ -69,7 +69,7 @@ class RoutesViewsTest(TestCase):
             },
             HTTP_X_REQUESTED_WITH='XMLHttpRequest'
         )
-        self.assertTrue(len(response.json()['predictions']) > 0)
+        self.assertTrue(len(response.json()) > 0)
 
     def test_get_daily_average_chart(self):
         test_ajax_post_required(self, 'get_daily_average_chart')
