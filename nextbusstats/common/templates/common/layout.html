@@ -23,10 +23,16 @@
         {% block 'content' %}Replace block "content"{% endblock %}
     </div>
 
+    <hr />
+    <div class="row text-center">
+        Code available on github: <a class="github-button" href="https://github.com/remiz/nextbus-stats" data-style="mega" data-count-href="/remiz/nextbus-stats/stargazers" data-count-api="/repos/remiz/nextbus-stats#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star remiz/nextbus-stats on GitHub">Star</a> - Hosted on my old raspberry pi (1st gen) <a href="https://www.raspberrypi.org/"><img src="{{STATIC_URL}}/static/common/img/raspberrypi.png" /></a>
+    </div>
+
     {% javascript 'global' %}
     <script>
         $(document).foundation();
     </script>
     {% block 'additional_js' %}{% endblock %}
+    <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 </body>
 </html>
