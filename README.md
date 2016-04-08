@@ -21,6 +21,7 @@ vagrant ssh
 cd /vagrant
 bower install
 ./manage.py migrate  # Initialize DB
+./manage.py collectstatic  # Retrieve assets
 ./manage.py loadroutes  # Load routes information from API
 ./manage.py createsuperuser  # Create an admin user to access backend
 ```
