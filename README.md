@@ -19,8 +19,6 @@ vagrant ssh
 - Once in your Vagrant box
 ```
 cd /vagrant
-mkvirtualenv nextbus
-pip install -r requirements.txt
 bower install
 ./manage.py migrate  # Initialize DB
 ./manage.py loadroutes  # Load routes information from API
