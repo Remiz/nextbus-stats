@@ -17,7 +17,7 @@
     "tests"
   ],
   "dependencies": {
-    "Chart.js": "~2.0.0-beta2",
+    "Chart.js": "~2.0.0",
     "foundation-icon-fonts": "latest",
     "foundation-sites": "~6.2.0",
     "jt.timepicker": "~1.8.11",
