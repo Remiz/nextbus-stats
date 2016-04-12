@@ -25,7 +25,7 @@ PIPELINE = {
                 'jt.timepicker/jquery.timepicker.min.js',
                 'moment/min/moment.min.js',
                 'moment-timezone/builds/moment-timezone-with-data.min.js',
-                'Chart.js/Chart.min.js',
+                'Chart.js/dist/Chart.min.js',
                 'vue/dist/vue.min.js',
                 'common/js/csrf.js',
                 'routes/js/routes.js',
