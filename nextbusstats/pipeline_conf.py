@@ -19,6 +19,7 @@ PIPELINE = {
         'global': {
             'source_filenames': (
                 'jquery/dist/jquery.min.js',
+                'common/js/csrf.js',
                 'foundation-sites/dist/foundation.min.js',
                 'pikaday/pikaday.js',
                 'pikaday/plugins/pikaday.jquery.js',
@@ -27,7 +28,6 @@ PIPELINE = {
                 'moment-timezone/builds/moment-timezone-with-data.min.js',
                 'Chart.js/dist/Chart.min.js',
                 'vue/dist/vue.min.js',
-                'common/js/csrf.js',
                 'routes/js/routes.js',
             ),
             'output_filename': 'js/global.js',
