@@ -2,6 +2,8 @@
 
 This application collect the waiting time predictions of vehicles from [Nextbus API](http://www.nextbus.com/) and allow you to visualize the average waiting time by day of the week or hour.
 
+Demonstration of the app is available at [nextbus-stats.tk](http://nextbus-stats.tk), it currently monitor the predictions for 2 streetcar routes in Toronto (510 Spadina and 512 St. Clair).
+
 This project isn't really scientifically accurate but it can probably be extended for other uses, feel free to ad your suggestion in the issue tracker.
 
 ## Installation
