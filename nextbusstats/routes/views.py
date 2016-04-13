@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.db.models import Avg
 from django.db import models
 from django.http import HttpResponse, HttpResponseForbidden
+from django.views.decorators.csrf import ensure_csrf_cookie
 from nextbusstats.common.tools import is_valid_time_format, DateTimeTimeTransform
 from .models import Route, Direction, Stop, Prediction
 
@@ -18,6 +19,7 @@ def routes_list(request):
     })
 
 
+@ensure_csrf_cookie
 def route(request, route_id):
     route = get_object_or_404(Route, pk=route_id)
     return render(request, 'routes/route.html', {
