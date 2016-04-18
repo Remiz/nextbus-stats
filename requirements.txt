@@ -5,7 +5,7 @@ django-pandas==0.4.1
 django-pipeline==1.6.8
 factory_boy==2.6.1
 httmock==1.2.5
-ipdb==0.9.0
+ipdb==0.9.3
 pandas==0.18.0
 psycopg2==2.6.1
 pytz==2016.3
