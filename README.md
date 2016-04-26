@@ -14,6 +14,7 @@ A vagrant file is included in the project to create a functional environment, to
 - Install [Ansible](http://docs.ansible.com/ansible/intro_installation.html) for the machine provisioning
 - Run these commands:
 ```
+git clone https://github.com/Remiz/nextbus-stats.git
 cd nextbus-stats/vagrant/
 vagrant up  # this may take a while
 vagrant ssh
