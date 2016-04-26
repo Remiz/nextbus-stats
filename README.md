@@ -4,7 +4,7 @@ This application collect the waiting time predictions of vehicles from [Nextbus 
 
 Demonstration of the app is available at [nextbus-stats.tk](http://nextbus-stats.tk), it currently monitors the predictions for 2 streetcar routes in Toronto (510 Spadina and 512 St. Clair).
 
-This project isn't really scientifically accurate but it can probably be extended for other uses, feel free to ad your suggestion in the issue tracker.
+This project isn't really scientifically accurate but it can probably be extended for other uses, feel free to add your suggestion in the issue tracker.
 
 ## Installation
 
